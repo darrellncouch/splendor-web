@@ -1,0 +1,1798 @@
+[
+ {
+  "id": 1,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 2,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 4,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 5,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 4
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 9,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 10,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 11,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 12,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 13,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 14,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 15,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 16,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 17,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 18,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 19,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 20,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 21,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 22,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 23,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 24,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 25,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 26,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 27,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 28,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 29,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 30,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 31,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 32,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 33,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 34,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 35,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 36,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 37,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 38,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 39,
+  "tier": 1,
+  "prestige": 0,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 40,
+  "tier": 1,
+  "prestige": 1,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 41,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "black",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 42,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 4
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 43,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "black",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 44,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "black",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 45,
+  "tier": 2,
+  "prestige": 3,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 46,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "black",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 47,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 5
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 48,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "black",
+    "count": 5
+   },
+   {
+    "id": "blue",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 49,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 4
+   },
+   {
+    "id": "black",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 50,
+  "tier": 2,
+  "prestige": 3,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 4
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 51,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "black",
+    "count": 4
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 52,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "white",
+    "count": 4
+   },
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 53,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "black",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 54,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "black",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 55,
+  "tier": 2,
+  "prestige": 3,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 56,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 57,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "black",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 58,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 59,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "black",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 60,
+  "tier": 2,
+  "prestige": 3,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "green",
+    "count": 5
+   },
+   {
+    "id": "red",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 61,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 62,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 63,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "black",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 64,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 65,
+  "tier": 2,
+  "prestige": 3,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 66,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "black",
+    "count": 4
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 67,
+  "tier": 2,
+  "prestige": 1,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 68,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "blue",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 69,
+  "tier": 2,
+  "prestige": 2,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "black",
+    "count": 1
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 70,
+  "tier": 2,
+  "prestige": 3,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "white",
+    "count": 4
+   },
+   {
+    "id": "green",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 71,
+  "tier": 3,
+  "prestige": 3,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "black",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 72,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "black",
+    "count": 5
+   },
+   {
+    "id": "red",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 73,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "black",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 74,
+  "tier": 3,
+  "prestige": 5,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 4
+   },
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "black",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 75,
+  "tier": 3,
+  "prestige": 3,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "red",
+    "count": 4
+   },
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "blue",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 76,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "black",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 77,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "white",
+    "count": 6
+   },
+   {
+    "id": "green",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 78,
+  "tier": 3,
+  "prestige": 5,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "black",
+    "count": 2
+   },
+   {
+    "id": "red",
+    "count": 6
+   },
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 79,
+  "tier": 3,
+  "prestige": 3,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "black",
+    "count": 3
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 80,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 4
+   },
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 81,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "green",
+    "count": 5
+   },
+   {
+    "id": "blue",
+    "count": 4
+   },
+   {
+    "id": "red",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 82,
+  "tier": 3,
+  "prestige": 5,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "white",
+    "count": 2
+   },
+   {
+    "id": "red",
+    "count": 4
+   },
+   {
+    "id": "green",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 83,
+  "tier": 3,
+  "prestige": 3,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 7
+   },
+   {
+    "id": "white",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 84,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "black",
+    "count": 3
+   },
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "blue",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 4
+   }
+  ]
+ },
+ {
+  "id": 85,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 5
+   },
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 86,
+  "tier": 3,
+  "prestige": 5,
+  "bonus": "white",
+  "cost": [
+   {
+    "id": "green",
+    "count": 3
+   },
+   {
+    "id": "blue",
+    "count": 3
+   },
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "black",
+    "count": 3
+   }
+  ]
+ },
+ {
+  "id": 87,
+  "tier": 3,
+  "prestige": 3,
+  "bonus": "blue",
+  "cost": [
+   {
+    "id": "green",
+    "count": 4
+   },
+   {
+    "id": "red",
+    "count": 3
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "id": 88,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "green",
+  "cost": [
+   {
+    "id": "white",
+    "count": 4
+   },
+   {
+    "id": "blue",
+    "count": 4
+   }
+  ]
+ },
+ {
+  "id": 89,
+  "tier": 3,
+  "prestige": 4,
+  "bonus": "red",
+  "cost": [
+   {
+    "id": "blue",
+    "count": 4
+   },
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 1
+   },
+   {
+    "id": "black",
+    "count": 2
+   }
+  ]
+ },
+ {
+  "id": 90,
+  "tier": 3,
+  "prestige": 5,
+  "bonus": "black",
+  "cost": [
+   {
+    "id": "green",
+    "count": 2
+   },
+   {
+    "id": "blue",
+    "count": 1
+   },
+   {
+    "id": "red",
+    "count": 2
+   },
+   {
+    "id": "white",
+    "count": 3
+   }
+  ]
+ }
+]

@@ -1,0 +1,61 @@
+@if (session() && status() === 'reconnecting') {
+  <div class="conn-banner">Reconnecting…</div>
+}
+
+@if (view(); as v) {
+  @if (v.board.phase === 'lobby') {
+    <main class="lobby">
+      <p class="eyebrow">Room {{ v.board.roomCode }}</p>
+      <h1>You're in, {{ v.self.name }}!</h1>
+      <p class="muted">Watch the host screen. The game starts when everyone is ready.</p>
+      <ul class="panel">
+        @for (p of v.board.players; track p.id) {
+          <li [class.me]="p.id === v.self.id">
+            {{ p.name }}
+            @if (p.isVip) { <span class="chip">VIP</span> }
+          </li>
+        }
+      </ul>
+      @if (isVip()) {
+        <button class="btn big" [disabled]="v.board.players.length < v.board.minPlayers" (click)="start()">
+          {{ v.board.players.length < v.board.minPlayers ? 'Waiting for players…' : 'Everybody\'s in, start!' }}
+        </button>
+      }
+      <button class="btn secondary" (click)="leave()">Leave room</button>
+    </main>
+  } @else {
+    <sp-game [view]="v" [stateVersion]="stateVersion()" (action)="sendAction($event)" (playAgain)="playAgain()" [isVip]="isVip()" />
+  }
+} @else if (session() && busy()) {
+  <main class="join">
+    <h1>Splendor</h1>
+    <p class="muted">Rejoining room {{ session()!.roomCode }}…</p>
+  </main>
+} @else {
+  <main class="join">
+    <h1>Splendor</h1>
+    <form class="panel" (ngSubmit)="join()">
+      <label class="field">
+        Room code
+        <input name="room" [(ngModel)]="roomCode" maxlength="4" autocapitalize="characters" autocomplete="off" placeholder="ABCD" class="code-input" />
+      </label>
+      <label class="field">
+        Your name
+        <input name="name" [(ngModel)]="name" maxlength="16" autocomplete="nickname" placeholder="Name" />
+      </label>
+      @if (showServer) {
+        <label class="field">
+          Server address
+          <input name="server" [(ngModel)]="serverUrl" autocomplete="off" placeholder="wss://…" />
+        </label>
+      } @else {
+        <button type="button" class="link" (click)="showServer = true">Change server</button>
+      }
+      <button class="btn big" type="submit" [disabled]="busy()">{{ busy() ? 'Joining…' : 'Join' }}</button>
+    </form>
+  </main>
+}
+
+@if (error()) {
+  <div class="toast" role="alert">{{ error() }}</div>
+}

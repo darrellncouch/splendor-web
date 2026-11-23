@@ -1,0 +1,106 @@
+@let b = board();
+
+<header class="top">
+  <h1>Splendor</h1>
+  <span class="room">Room <b>{{ b.roomCode }}</b></span>
+  <span class="round">Round {{ b.round }}</span>
+  @if (b.finalRound && b.phase === 'playing') {
+    <span class="final">Final round!</span>
+  }
+  @if (currentPlayer(); as cp) {
+    <span class="turn">{{ cp.name }}'s turn</span>
+  }
+  @if (b.phase === 'playing') {
+    <span class="host-controls">
+      <button class="btn secondary small" (click)="confirm('End this game and go back to the lobby?') && playAgain.emit()">Back to lobby</button>
+      <button class="btn secondary small" (click)="confirm('Close the room? Everyone will be disconnected.') && closeRoom.emit()">Close room</button>
+    </span>
+  }
+</header>
+
+<main class="table">
+  <section class="market">
+    <div class="nobles">
+      @for (n of b.availableNobles; track n.id) {
+        <sp-noble [noble]="n" />
+      }
+    </div>
+
+    @for (row of rows(); track row.tier) {
+      <div class="row">
+        @if (row.remaining > 0) {
+          <sp-card-back [tier]="row.tier" [remaining]="row.remaining" />
+        } @else {
+          <div class="slot empty-deck">empty</div>
+        }
+        <div class="divider"></div>
+        @for (card of row.cards; track $index) {
+          @if (card) {
+            <sp-card [card]="card" />
+          } @else {
+            <div class="slot"></div>
+          }
+        }
+      </div>
+    }
+  </section>
+
+  <aside class="side">
+    <section class="bank panel">
+      <h2>Bank</h2>
+      <div class="bank-gems">
+        @for (c of gemColors; track c) {
+          <sp-gem [color]="c" [count]="countOf(b.bank, c)" size="lg" />
+        }
+      </div>
+    </section>
+
+    <section class="players">
+      @for (p of b.players; track p.id) {
+        <article class="player panel" [class.active]="p.isCurrentTurn" [class.offline]="!p.connected">
+          <header>
+            <span class="name">{{ p.name }}</span>
+            @if (!p.connected) { <span class="chip">offline</span> }
+            @if (pendingLabel(p); as label) { <span class="chip warn">{{ label }}</span> }
+            <span class="prestige" [attr.aria-label]="p.prestige + ' prestige'">{{ p.prestige }}</span>
+          </header>
+          <sp-player-summary
+            [gems]="p.gems"
+            [gemTotal]="p.gemTotal"
+            [bonuses]="p.bonuses"
+            [nobles]="p.nobles"
+            [reservedTiers]="reservedTiers(p)"
+            gemSize="md" />
+        </article>
+      }
+    </section>
+
+    <section class="log panel" aria-live="polite">
+      @for (entry of recentLog(); track entry.id) {
+        <p>{{ entry.message }}</p>
+      }
+    </section>
+  </aside>
+</main>
+
+@if (b.phase === 'finished') {
+  <div class="results-backdrop">
+    <section class="results panel">
+      <h2>Game over</h2>
+      <ol>
+        @for (p of standings(); track p.id) {
+          <li [class.winner]="isWinner(p)">
+            <span class="place">{{ isWinner(p) ? '👑' : $index + 1 }}</span>
+            <span class="name">{{ p.name }}</span>
+            <span class="score">{{ p.prestige }} <small>prestige</small></span>
+            <span class="cards">{{ p.purchasedCount }} cards</span>
+          </li>
+        }
+      </ol>
+      <div class="actions">
+        <button class="btn" (click)="playAgain.emit()">Play again</button>
+        <button class="btn secondary" (click)="closeRoom.emit()">Close room</button>
+      </div>
+    </section>
+  </div>
+}

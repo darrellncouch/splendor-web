@@ -1,0 +1,76 @@
+@if (session() && status() === 'reconnecting') {
+  <div class="conn-banner">Lost connection to the server. Reconnecting…</div>
+}
+
+@if (board(); as b) {
+  @if (b.phase === 'lobby') {
+    <main class="lobby">
+      <header>
+        <h1>Splendor</h1>
+        <button class="btn secondary small" (click)="closeRoom()">Close room</button>
+      </header>
+
+      <section class="code panel">
+        <span class="label">Room code</span>
+        <span class="room-code">{{ b.roomCode }}</span>
+        @if (inviteLink()) {
+          <div class="invite">
+            <code>{{ inviteLink() }}</code>
+            <button class="btn small" (click)="copyInvite()">{{ copied() ? 'Copied!' : 'Copy invite link' }}</button>
+          </div>
+        }
+        @if (!settings().publicServerUrl) {
+          <p class="hint">No public server URL is set, so friends outside your network won't be able to connect. Close the room and add your tunnel URL in the settings.</p>
+        }
+      </section>
+
+      <section class="players panel">
+        <h2>Players <span class="muted">{{ b.players.length }}/{{ b.maxPlayers }}</span></h2>
+        @if (b.players.length === 0) {
+          <p class="muted">Waiting for players to join…</p>
+        }
+        <ul>
+          @for (p of b.players; track p.id) {
+            <li [class.offline]="!p.connected">
+              <span class="name">{{ p.name }}</span>
+              @if (p.isVip) { <span class="chip vip">VIP</span> }
+              @if (!p.connected) { <span class="chip">offline</span> }
+              <button class="btn secondary small" (click)="kick(p.id)" [attr.aria-label]="'Remove ' + p.name">Remove</button>
+            </li>
+          }
+        </ul>
+        <button class="btn start" [disabled]="!canStart()" (click)="start()">
+          {{ canStart() ? 'Start game' : 'Need at least ' + b.minPlayers + ' players' }}
+        </button>
+        <p class="hint">The VIP can also start the game from their phone.</p>
+      </section>
+    </main>
+  } @else {
+    <sp-board [board]="b" (playAgain)="playAgain()" (closeRoom)="closeRoom()" />
+  }
+} @else {
+  <main class="setup">
+    <h1>Splendor</h1>
+    <p class="muted">Host screen. Share this window on Discord.</p>
+
+    <div class="panel form">
+      <label class="field">
+        Server URL for this screen
+        <input [ngModel]="settings().serverUrl" (ngModelChange)="updateSetting('serverUrl', $event)" placeholder="ws://localhost:3000" />
+      </label>
+      <label class="field">
+        Public server URL for players (your tunnel)
+        <input [ngModel]="settings().publicServerUrl" (ngModelChange)="updateSetting('publicServerUrl', $event)" placeholder="wss://something.trycloudflare.com" />
+      </label>
+      <label class="field">
+        Player site URL
+        <input [ngModel]="settings().playerSiteUrl" (ngModelChange)="updateSetting('playerSiteUrl', $event)" placeholder="https://you.github.io/splendor-web/" />
+      </label>
+      <button class="btn" [disabled]="busy()" (click)="createRoom()">{{ busy() ? 'Connecting…' : 'Create room' }}</button>
+    </div>
+  </main>
+}
+
+@if (error()) {
+  <div class="toast" role="alert">{{ error() }}</div>
+}

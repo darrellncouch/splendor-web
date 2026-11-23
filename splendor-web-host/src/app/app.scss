@@ -1,0 +1,113 @@
+:host { display: block; min-height: 100vh; }
+
+h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+}
+
+.muted { color: var(--muted); }
+.hint { margin: 0; font-size: .85rem; color: var(--muted); }
+
+.setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 10vh 1rem;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: min(32rem, 100%);
+    padding: 1.5rem;
+  }
+}
+
+.lobby {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 1.5rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+
+  header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .panel { padding: 2rem; }
+  h2 { margin: 0 0 1rem; }
+}
+
+.code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+
+  .label { text-transform: uppercase; letter-spacing: .2em; color: var(--muted); }
+  .room-code {
+    font-size: clamp(5rem, 14vw, 11rem);
+    font-weight: 900;
+    letter-spacing: .12em;
+    line-height: 1;
+    color: var(--accent);
+    text-shadow: 0 4px 30px var(--accent-glow);
+  }
+  .invite {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    code {
+      max-width: 100%;
+      padding: .5em .8em;
+      overflow-wrap: anywhere;
+      border-radius: .4rem;
+      background: rgba(0, 0, 0, .35);
+      font-size: .85rem;
+    }
+  }
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+
+  ul { list-style: none; margin: 0 0 auto; padding: 0; display: flex; flex-direction: column; gap: .6rem; }
+  li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .8rem 1rem;
+    border-radius: .6rem;
+    background: rgba(255, 255, 255, .06);
+    font-size: 1.4rem;
+    .name { font-weight: 700; margin-right: auto; }
+    &.offline { opacity: .55; }
+  }
+  .start { margin-top: 1.5rem; padding: 1em; font-size: 1.2rem; }
+  .hint { margin-top: .6rem; text-align: center; }
+}
+
+.chip {
+  padding: .15em .55em;
+  border-radius: 99px;
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: rgba(255, 255, 255, .15);
+  &.vip { background: var(--accent); color: #2a1f00; }
+}

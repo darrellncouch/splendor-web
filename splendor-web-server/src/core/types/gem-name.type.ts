@@ -1,0 +1,1 @@
+export type GemName = 'gold' | 'onyx' | 'diamond' | 'saphire' | 'emerald' | 'ruby'

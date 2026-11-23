@@ -1,0 +1,202 @@
+@let a = actions();
+@let me = self();
+@let b = board();
+
+<header class="status" [class.my-turn]="a.isYourTurn">
+  @if (b.phase === 'finished') {
+    Game over
+  } @else if (a.isYourTurn) {
+    Your turn!
+  } @else if (currentPlayer(); as cp) {
+    Waiting for {{ cp.name }}…
+  }
+  @if (b.finalRound && b.phase === 'playing') { <span class="final">Final round</span> }
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" [class.active]="tab() === 'me'" [attr.aria-selected]="tab() === 'me'" (click)="tab.set('me')">
+    Me <span class="pts">{{ me.prestige }}</span>
+  </button>
+  @for (p of opponents(); track p.id) {
+    <button role="tab" [class.active]="tab() === p.id" [class.their-turn]="p.isCurrentTurn" [attr.aria-selected]="tab() === p.id" (click)="tab.set(p.id)">
+      {{ p.name }} <span class="pts">{{ p.prestige }}</span>
+    </button>
+  }
+</nav>
+
+<main class="content">
+  @if (activeOpponent(); as p) {
+    <section class="panel player">
+      <div class="headline">
+        <h2>{{ p.name }}</h2>
+        @if (!p.connected) { <span class="chip">offline</span> }
+        <span class="prestige">{{ p.prestige }} <small>prestige</small></span>
+      </div>
+      <sp-player-summary [gems]="p.gems" [gemTotal]="p.gemTotal" [bonuses]="p.bonuses" [nobles]="p.nobles" [reservedTiers]="reservedTiers(p)" />
+      <p class="muted">{{ p.purchasedCount }} cards bought</p>
+    </section>
+  } @else {
+    <section class="panel player">
+      <div class="headline">
+        <h2>{{ me.name }}</h2>
+        <span class="prestige">{{ me.prestige }} <small>prestige</small></span>
+      </div>
+      <sp-player-summary [gems]="me.gems" [gemTotal]="me.gemTotal" [bonuses]="me.bonuses" [nobles]="me.nobles" gemSize="md">
+        <div class="reserved">
+          <span class="label">Reserved {{ me.reserved.length }}/3</span>
+          @if (me.reserved.length === 0) {
+            <p class="muted">None</p>
+          }
+          <div class="cards">
+            @for (c of me.reserved; track c.id) {
+              <button class="card-btn" [disabled]="!(a.canPurchase && affordable().has(c.id))" (click)="buyReserved(c.id)" [attr.aria-label]="'Buy reserved card'">
+                <sp-card [card]="c" [affordable]="affordable().has(c.id)" />
+                @if (a.canPurchase && affordable().has(c.id)) { <span class="buy-tag">Tap to buy</span> }
+              </button>
+            }
+          </div>
+        </div>
+      </sp-player-summary>
+    </section>
+  }
+</main>
+
+@if (b.phase === 'playing') {
+  <footer class="action-bar">
+    <button class="btn" [disabled]="!a.canTakeGems" (click)="openSheet('take')">Take gems</button>
+    <button class="btn" [disabled]="!a.canPurchase" (click)="openSheet('buy')">Buy card</button>
+    <button class="btn" [disabled]="!a.canReserve" (click)="openSheet('reserve')">Reserve</button>
+    @if (a.canPass) { <button class="btn secondary" (click)="pass()">Pass</button> }
+  </footer>
+}
+
+<!-- ===== Take gems ===== -->
+@if (sheet() === 'take') {
+  <div class="sheet-backdrop" (click)="sheet.set(null)"></div>
+  <section class="sheet" role="dialog" aria-label="Take gems">
+    <h3>Take gems</h3>
+    <p class="muted">{{ gemHint() }} Tap a color twice to take 2.</p>
+    <div class="gem-picker">
+      @for (c of basicColors; track c) {
+        <button class="gem-btn" [class.picked]="gemPickCount(c) > 0" [disabled]="!a.distinctGemColors.includes(c)" (click)="tapGem(c)">
+          <sp-gem [color]="c" [count]="countOf(b.bank, c)" size="lg" />
+          <span class="name">{{ gemNames[c] }}</span>
+          @if (gemPickCount(c)) { <span class="badge">+{{ gemPickCount(c) }}</span> }
+        </button>
+      }
+    </div>
+    @if (overLimitAfterTake()) {
+      <p class="warn">You'll have to return {{ overLimitAfterTake() }} gem(s) to stay at 10.</p>
+    }
+    <div class="sheet-actions">
+      <button class="btn secondary" (click)="sheet.set(null)">Cancel</button>
+      <button class="btn" [disabled]="!gemPickValid()" (click)="confirmTake()">Take {{ gemPickTotal() || '' }}</button>
+    </div>
+  </section>
+}
+
+<!-- ===== Buy / Reserve card ===== -->
+@if (sheet() === 'buy' || sheet() === 'reserve') {
+  <div class="sheet-backdrop" (click)="sheet.set(null)"></div>
+  <section class="sheet tall" role="dialog" [attr.aria-label]="sheet() === 'buy' ? 'Buy a card' : 'Reserve a card'">
+    <h3>{{ sheet() === 'buy' ? 'Buy a card' : 'Reserve a card' }}</h3>
+    <p class="muted">
+      @if (sheet() === 'buy') { Highlighted cards are ones you can afford. Bonuses and gold are applied automatically. }
+      @else { Pick a face-up card or a face-down deck. {{ countOf(b.bank, 'gold') > 0 ? 'You also get 1 gold.' : 'No gold left in the bank.' }} }
+    </p>
+    <div class="market">
+      @for (row of rows(); track row.tier) {
+        <div class="row">
+          @if (sheet() === 'reserve') {
+            <button class="card-btn" [disabled]="!a.reservableDeckTiers.includes(row.tier)" (click)="pickDeck(row.tier)" [class.picked]="isDeckPicked(row.tier)">
+              <sp-card-back [tier]="row.tier" [remaining]="row.remaining" />
+            </button>
+          }
+          @for (card of row.cards; track $index) {
+            @if (card) {
+              <button class="card-btn" (click)="pickCard(card)" [disabled]="sheet() === 'buy' && !affordable().has(card.id)">
+                <sp-card [card]="card" [affordable]="sheet() === 'buy' && affordable().has(card.id)" [selected]="isPicked(card)" [dim]="sheet() === 'buy' && !affordable().has(card.id)" />
+              </button>
+            } @else {
+              <div class="slot"></div>
+            }
+          }
+        </div>
+      }
+      @if (sheet() === 'buy' && me.reserved.length) {
+        <h4>Your reserved cards</h4>
+        <div class="row">
+          @for (card of me.reserved; track card.id) {
+            <button class="card-btn" (click)="pickCard(card)" [disabled]="!affordable().has(card.id)">
+              <sp-card [card]="card" [affordable]="affordable().has(card.id)" [selected]="isPicked(card)" [dim]="!affordable().has(card.id)" />
+            </button>
+          }
+        </div>
+      }
+    </div>
+    <div class="sheet-actions">
+      <button class="btn secondary" (click)="sheet.set(null)">Cancel</button>
+      <button class="btn" [disabled]="!cardPick()" (click)="confirmCard()">{{ sheet() === 'buy' ? 'Buy' : 'Reserve' }}</button>
+    </div>
+  </section>
+}
+
+<!-- ===== Forced: discard down to 10 ===== -->
+@if (pending(); as p) {
+  @if (p.type === 'discard') {
+    <div class="sheet-backdrop"></div>
+    <section class="sheet" role="dialog" aria-label="Return gems">
+      <h3>Too many gems!</h3>
+      <p class="muted">You can hold 10. Choose {{ p.count }} to return to the bank ({{ discardTotal() }}/{{ p.count }}).</p>
+      <div class="discard-list">
+        @for (c of allColors; track c) {
+          @if (countOf(me.gems, c) > 0) {
+            <div class="discard-row">
+              <sp-gem [color]="c" [count]="countOf(me.gems, c) - discardCount(c)" size="md" />
+              <span class="name">{{ gemNames[c] }}</span>
+              <button class="btn secondary small" (click)="adjustDiscard(c, -1)" [disabled]="!discardCount(c)" aria-label="Keep one">−</button>
+              <span class="qty">{{ discardCount(c) }}</span>
+              <button class="btn secondary small" (click)="adjustDiscard(c, 1)" [disabled]="discardTotal() >= p.count || discardCount(c) >= countOf(me.gems, c)" aria-label="Return one">+</button>
+            </div>
+          }
+        }
+      </div>
+      <div class="sheet-actions">
+        <button class="btn" [disabled]="discardTotal() !== p.count" (click)="confirmDiscard()">Return {{ p.count }}</button>
+      </div>
+    </section>
+  } @else {
+    <div class="sheet-backdrop"></div>
+    <section class="sheet" role="dialog" aria-label="Choose a noble">
+      <h3>A noble wants to visit!</h3>
+      <p class="muted">You qualify for more than one. Pick who visits you.</p>
+      <div class="nobles">
+        @for (n of pendingNobles(); track n.id) {
+          <button class="card-btn" (click)="chooseNoble(n.id)"><sp-noble [noble]="n" /></button>
+        }
+      </div>
+    </section>
+  }
+}
+
+<!-- ===== Results ===== -->
+@if (b.phase === 'finished') {
+  <div class="sheet-backdrop"></div>
+  <section class="sheet" role="dialog" aria-label="Results">
+    <h3>{{ isWinner(me) ? 'You won! 👑' : 'Game over' }}</h3>
+    <ol class="standings">
+      @for (p of standings(); track p.id) {
+        <li [class.winner]="isWinner(p)" [class.me]="p.id === me.id">
+          <span>{{ isWinner(p) ? '👑' : $index + 1 }}</span>
+          <span class="name">{{ p.name }}</span>
+          <b>{{ p.prestige }}</b>
+        </li>
+      }
+    </ol>
+    @if (isVip()) {
+      <div class="sheet-actions"><button class="btn" (click)="playAgain.emit()">Play again</button></div>
+    } @else {
+      <p class="muted">Waiting for the host or VIP to start another game.</p>
+    }
+  </section>
+}

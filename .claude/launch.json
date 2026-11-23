@@ -1,0 +1,8 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "server", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "splendor-web-server", "run", "dev"], "port": 3000 },
+    { "name": "host", "runtimeExecutable": "npx", "runtimeArgs": ["ng", "serve", "host"], "port": 4200 },
+    { "name": "client", "runtimeExecutable": "npx", "runtimeArgs": ["ng", "serve", "client"], "port": 4300 }
+  ]
+}

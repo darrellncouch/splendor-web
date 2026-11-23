@@ -1,0 +1,131 @@
+// Shared look for the host and client apps (added to both through the angular.json "styles" list).
+
+:root {
+  --bg: #13241d;
+  --bg-felt: radial-gradient(ellipse at 50% 30%, #24473a 0%, #13241d 70%);
+  --panel: rgba(8, 18, 14, .62);
+  --panel-strong: rgba(6, 14, 11, .85);
+  --panel-border: rgba(255, 255, 255, .1);
+  --text: #f3efe4;
+  --muted: #b5b9ae;
+  --accent: #f2c14e;
+  --accent-glow: rgba(242, 193, 78, .55);
+  --danger: #ff6b6b;
+  --ok: #5fd38d;
+  --card-body: #efe6d2;
+  --radius: .8rem;
+
+  --tier: #2f6b3a;
+  --tier-light: #4a9b58;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  background-image: var(--bg-felt);
+  background-attachment: fixed;
+  color: var(--text);
+}
+
+button { font: inherit; }
+
+// ---- gem color tokens (any element with .gem-<color> picks them up) ----
+.gem-white { --gem: #f6f4ee; --gem-dark: #a8a49a; --gem-fg: #1b1b1b; --gem-shadow: rgba(255,255,255,.6); }
+.gem-blue  { --gem: #2f6fd6; --gem-dark: #173c80; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
+.gem-green { --gem: #27a25a; --gem-dark: #135a30; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
+.gem-red   { --gem: #d63a3a; --gem-dark: #7d1818; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
+.gem-black { --gem: #3a3a3f; --gem-dark: #101012; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.8); }
+.gem-gold  { --gem: #f2c14e; --gem-dark: #9a6d0c; --gem-fg: #3b2a00; --gem-shadow: rgba(255,255,255,.5); }
+
+// card faces use their bonus color
+.bonus-white { @extend .gem-white; }
+.bonus-blue  { @extend .gem-blue; }
+.bonus-green { @extend .gem-green; }
+.bonus-red   { @extend .gem-red; }
+.bonus-black { @extend .gem-black; }
+
+// card backs by tier
+.tier-1 { --tier: #2f6b3a; --tier-light: #4f9e5c; }
+.tier-2 { --tier: #8a6a12; --tier-light: #c9a033; }
+.tier-3 { --tier: #1f4b8a; --tier-light: #3f7fd0; }
+
+// ---- small shared UI bits ----
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(4px);
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: .6rem;
+  padding: .75em 1.2em;
+  font-weight: 700;
+  color: #1d1600;
+  background: var(--accent);
+  cursor: pointer;
+  transition: filter .15s, transform .05s;
+  &:hover:not(:disabled) { filter: brightness(1.08); }
+  &:active:not(:disabled) { transform: translateY(1px); }
+  &:disabled { opacity: .4; cursor: not-allowed; }
+  &.secondary { background: rgba(255,255,255,.12); color: var(--text); }
+  &.danger { background: var(--danger); color: #fff; }
+  &.small { padding: .4em .75em; font-size: .85em; }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: .35em;
+  font-size: .85rem;
+  color: var(--muted);
+  input {
+    font: inherit;
+    font-size: 1.05rem;
+    color: var(--text);
+    background: rgba(0,0,0,.35);
+    border: 1px solid var(--panel-border);
+    border-radius: .5rem;
+    padding: .7em .8em;
+    &:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  }
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.2rem;
+  transform: translateX(-50%);
+  z-index: 100;
+  max-width: min(92vw, 34rem);
+  padding: .8em 1.1em;
+  border-radius: .6rem;
+  background: #3b1111;
+  border: 1px solid var(--danger);
+  color: #ffdede;
+  box-shadow: 0 6px 24px rgba(0,0,0,.5);
+  font-weight: 600;
+}
+
+.conn-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 90;
+  padding: .4em;
+  text-align: center;
+  font-size: .85rem;
+  font-weight: 700;
+  background: #7a5b00;
+  color: #fff;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
