@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+.angular
+.git
+.claude
+.vscode
+raw-assets-temp
+*.csv
+!splendor-web-server/data/*.csv
+.env

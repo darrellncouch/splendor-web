@@ -6,7 +6,7 @@
   @if (v.board.phase === 'lobby') {
     <main class="lobby">
       <p class="eyebrow">Room {{ v.board.roomCode }}</p>
-      <h1>You're in, {{ v.self.name }}!</h1>
+      <h1>Welcome aboard, {{ v.self.name }}!</h1>
       <p class="muted">Watch the host screen. The game starts when everyone is ready.</p>
       <ul class="panel">
         @for (p of v.board.players; track p.id) {
@@ -18,22 +18,30 @@
       </ul>
       @if (isVip()) {
         <button class="btn big" [disabled]="v.board.players.length < v.board.minPlayers" (click)="start()">
-          {{ v.board.players.length < v.board.minPlayers ? 'Waiting for players…' : 'Everybody\'s in, start!' }}
+          {{ v.board.players.length < v.board.minPlayers ? 'Waiting for crew…' : 'All hands aboard, set sail!' }}
         </button>
       }
-      <button class="btn secondary" (click)="leave()">Leave room</button>
+      <button class="btn secondary" (click)="leave()">Abandon ship (leave)</button>
+      <sp-rules variant="link" />
     </main>
   } @else {
-    <sp-game [view]="v" [stateVersion]="stateVersion()" (action)="sendAction($event)" (playAgain)="playAgain()" [isVip]="isVip()" />
+    <sp-game [view]="v" [stateVersion]="stateVersion()" (action)="sendAction($event)" (playAgain)="playAgain()" (leave)="leave()" [isVip]="isVip()" />
   }
 } @else if (session() && busy()) {
   <main class="join">
-    <h1>Splendor</h1>
+    <h1>Booty</h1>
     <p class="muted">Rejoining room {{ session()!.roomCode }}…</p>
   </main>
 } @else {
   <main class="join">
-    <h1>Splendor</h1>
+    <h1>Booty</h1>
+    <p class="tagline">Plunder gems. Become a legend.</p>
+    @if (notice()) {
+      <div class="notice panel" role="status">
+        <span>{{ notice() }}</span>
+        <button type="button" class="link" (click)="notice.set(null)" aria-label="Dismiss">Dismiss</button>
+      </div>
+    }
     <form class="panel" (ngSubmit)="join()">
       <label class="field">
         Room code
@@ -51,8 +59,9 @@
       } @else {
         <button type="button" class="link" (click)="showServer = true">Change server</button>
       }
-      <button class="btn big" type="submit" [disabled]="busy()">{{ busy() ? 'Joining…' : 'Join' }}</button>
+      <button class="btn big" type="submit" [disabled]="busy()">{{ busy() ? 'Coming aboard…' : 'Join the crew' }}</button>
     </form>
+    <sp-rules variant="link" />
   </main>
 }
 

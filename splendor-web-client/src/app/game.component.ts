@@ -5,6 +5,7 @@ import { NobleComponent } from '@shared/components/noble.component';
 import { PlayerSummaryComponent } from '@shared/components/player-summary.component';
 import { ALL_GEM_COLORS, BASIC_GEM_COLORS, countOf, GEM_NAMES } from '@shared/gems';
 import { BasicGemColor, CardTier, GemColor, ICard, IPlayer, IPlayerView, PlayerAction, ReserveSource } from '@shared/protocol';
+import { RulesComponent } from './rules.component';
 
 type Sheet = 'take' | 'buy' | 'reserve' | null;
 
@@ -15,7 +16,7 @@ type Sheet = 'take' | 'buy' | 'reserve' | null;
  */
 @Component({
   selector: 'sp-game',
-  imports: [GemComponent, CardComponent, CardBackComponent, NobleComponent, PlayerSummaryComponent],
+  imports: [GemComponent, CardComponent, CardBackComponent, NobleComponent, PlayerSummaryComponent, RulesComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
@@ -26,6 +27,16 @@ export class GameComponent {
   readonly isVip = input(false);
   readonly action = output<PlayerAction>();
   readonly playAgain = output<void>();
+  /** The player wants out of this room (back to the join screen). */
+  readonly leave = output<void>();
+
+  protected confirmLeave(): void {
+    const playing = this.view().board.phase === 'playing';
+    const msg = playing
+      ? 'Leave this game? You will not be able to rejoin your seat.'
+      : 'Leave this room?';
+    if (confirm(msg)) this.leave.emit();
+  }
 
   protected readonly gemNames = GEM_NAMES;
   protected readonly basicColors = BASIC_GEM_COLORS;
@@ -161,6 +172,11 @@ export class GameComponent {
 
   protected pass(): void {
     this.action.emit({ type: 'pass' });
+  }
+
+  /** Put the gems just taken back instead of discarding. The turn starts over with every move available. */
+  protected undoTake(): void {
+    this.action.emit({ type: 'undoTakeGems' });
   }
 
   // ---- discard ----

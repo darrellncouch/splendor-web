@@ -1,1 +1,17 @@
 /* Host-only global styles. The shared theme is in splendor-web-shared/styles/theme.scss */
+
+// The ship-at-night painting is the backdrop for every host screen (the phones keep the deck planks).
+// It's darkened toward the edges so the header and panels stay readable on a screenshare.
+html, body {
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(8, 10, 12, .2), rgba(8, 10, 12, .75) 90%),
+    linear-gradient(180deg, rgba(8, 10, 12, .55), transparent 18%),
+    url('/art/night-sea.jpg') center / cover no-repeat fixed,
+    #0d1418;
+}
+
+// Panels sit over a busy painting here, so frost them a little more than on the phones
+.panel {
+  background: rgba(24, 16, 9, .8);
+  backdrop-filter: blur(8px) saturate(1.1);
+}

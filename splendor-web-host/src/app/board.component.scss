@@ -1,7 +1,10 @@
 :host {
   // Card size scales with the window so the whole table fits a 16:9 screenshare
-  --card-w: min(8.6vw, 14vh);
-  --noble-w: calc(var(--card-w) * .92);
+  // Card height comes from --card-ratio in theme.scss. The vh limit keeps the nobles row
+  // plus three market rows inside a 16:9 screenshare.
+  --card-w: min(9.5vw, 13.3vh);
+  --noble-w: calc(var(--card-w) * 1.08);
+  --noble-ratio: 1.07;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -15,13 +18,14 @@
   align-items: center;
   gap: 1.5rem;
   font-size: 1.15rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .85);
 
   h1 {
     margin: 0 auto 0 0;
-    font-size: 1.6rem;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size: 2.3rem;
+    line-height: 1;
     color: var(--accent);
+    text-shadow: 0 2px 0 #6b4310, 0 3px 10px rgba(0, 0, 0, .6);
   }
   .room b { color: var(--accent); letter-spacing: .1em; }
   .final {
@@ -60,14 +64,16 @@
 
   .nobles { display: flex; gap: .8vw; padding-left: calc(var(--card-w) + 1.6vw); margin-bottom: .6vh; }
   .row { display: flex; align-items: center; gap: .8vw; }
-  .divider { width: 2px; align-self: stretch; margin: 0 .2vw; background: rgba(255, 255, 255, .15); }
+  .divider { width: 2px; align-self: stretch; margin: 0 .2vw; background: rgba(214, 168, 88, .45); }
 }
 
 .slot {
   width: var(--card-w);
-  aspect-ratio: 5 / 7;
+  height: calc(var(--card-w) * var(--card-ratio));
+  flex: none;
   border-radius: calc(var(--card-w) * .08);
-  border: 2px dashed rgba(255, 255, 255, .15);
+  border: 2px dashed rgba(214, 168, 88, .4);
+  background: rgba(0, 0, 0, .25);
   &.empty-deck { display: grid; place-items: center; color: var(--muted); font-size: .8rem; }
 }
 
@@ -78,7 +84,7 @@
   flex-direction: column;
   gap: 1.2vh;
 
-  h2 { margin: 0 0 .5rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+  h2 { margin: 0 0 .4rem; font-size: 1.3rem; line-height: 1; color: var(--accent); }
 }
 
 .bank {
@@ -115,7 +121,7 @@
     min-width: 2.2em;
     height: 2.2em;
     border-radius: 50%;
-    background: rgba(255, 255, 255, .12);
+    background: rgba(255, 230, 190, .1);
     font-size: 1.4em;
     font-weight: 900;
   }
@@ -151,7 +157,8 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(0, 0, 0, .6);
+  background: rgba(6, 8, 10, .6);
+  backdrop-filter: blur(6px);
   z-index: 50;
 }
 
@@ -160,7 +167,7 @@
   padding: 2rem 2.5rem;
   background: var(--panel-strong);
 
-  h2 { margin: 0 0 1.2rem; text-align: center; font-size: 2.4rem; color: var(--accent); }
+  h2 { margin: 0 0 1.2rem; text-align: center; font-size: 3rem; color: var(--accent); }
   ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .6rem; }
   li {
     display: grid;
@@ -169,9 +176,9 @@
     gap: 1rem;
     padding: .8rem 1rem;
     border-radius: .6rem;
-    background: rgba(255, 255, 255, .06);
+    background: rgba(255, 230, 190, .06);
     font-size: 1.3rem;
-    &.winner { background: rgba(242, 193, 78, .2); box-shadow: inset 0 0 0 2px var(--accent); }
+    &.winner { background: rgba(233, 185, 73, .2); box-shadow: inset 0 0 0 2px var(--accent); }
   }
   .place { text-align: center; font-weight: 900; }
   .name { font-weight: 800; }

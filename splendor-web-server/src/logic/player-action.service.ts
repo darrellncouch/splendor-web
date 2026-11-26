@@ -1,6 +1,7 @@
 import { GameRuleError } from "../core/errors/game-rule.error";
 import { IAvailableActions } from "../core/interfaces/available-actions.interface";
 import { IGameContext } from "../core/interfaces/game-context.interface";
+import { IResource } from "../core/interfaces/resource.interface";
 import { PlayerAction } from "../core/interfaces/player-action.interface";
 import { describeResources } from "../core/utils/resource.util";
 import { PlayerState } from "../state/player.state";
@@ -35,8 +36,13 @@ export class PlayerActionService {
         // Finish a pending decision first (discard down to 10 / pick a noble)
         const pending = state.pending;
         if (pending) {
-            if (pending.type === 'discard' && action.type === 'discardGems')
-                return this.turn.discard(ctx, player, action.gems);
+            if (pending.type === 'discard' && action.type === 'discardGems') {
+                this.turn.discard(ctx, player, action.gems);
+                state.undoableTake = null;
+                return;
+            }
+            if (pending.type === 'discard' && action.type === 'undoTakeGems')
+                return this.undoTake(ctx, player);
             if (pending.type === 'chooseNoble' && action.type === 'chooseNoble')
                 return this.turn.chooseNoble(ctx, player, action.nobleId);
 
@@ -49,7 +55,10 @@ export class PlayerActionService {
             case 'takeGems': {
                 const taken = this.takeGems.execute(player, bank, action.gems);
                 state.addLog(`${player.name} took ${describeResources(taken)}`);
-                break;
+                this.turn.continueTurn(ctx);
+                // If that take means they have to discard, they may put it back instead
+                state.undoableTake = state.pending?.type === 'discard' ? taken.map(r => ({ ...r })) : null;
+                return;
             }
             case 'reserveCard': {
                 const result = this.reserveCard.execute(player, bank, market, action.source);
@@ -71,10 +80,24 @@ export class PlayerActionService {
             }
             case 'discardGems':
             case 'chooseNoble':
+            case 'undoTakeGems':
                 throw new GameRuleError("You can't do that right now");
         }
 
         this.turn.continueTurn(ctx);
+    }
+
+    /** Puts the just-taken gems back in the bank and cancels the discard. It's still their turn, with a free choice of move. */
+    private undoTake(ctx: IGameContext, player: PlayerState): void {
+        const taken: ReadonlyArray<IResource> | null = ctx.state.undoableTake;
+        if (!taken)
+            throw new GameRuleError("You can only undo taking gems");
+
+        player.removeGems(taken);
+        ctx.bank.deposit(taken);
+        ctx.state.pending = null;
+        ctx.state.undoableTake = null;
+        ctx.state.addLog(`${player.name} put back ${describeResources(taken)} to choose another move`);
     }
 
     public hasLegalMainAction(ctx: IGameContext, player: PlayerState): boolean {
@@ -99,6 +122,7 @@ export class PlayerActionService {
         return {
             isYourTurn,
             pending,
+            canUndoTake: pending?.type === 'discard' && !!state.undoableTake,
             canTakeGems,
             distinctGemColors: gemOptions.distinctColors,
             requiredDistinctCount: gemOptions.requiredDistinct,

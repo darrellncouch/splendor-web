@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { GameSocketService } from '@shared/game-socket.service';
 import { IPlayerView, PlayerAction, ServerMessage } from '@shared/protocol';
 import { GameComponent } from './game.component';
+import { RulesComponent } from './rules.component';
 
 interface PlayerSession {
   serverUrl: string;
@@ -24,13 +25,18 @@ function loadSession(): PlayerSession | null {
   }
 }
 
-/** Server address priority: ?server= in the invite link, then the last one used, then the same machine on port 3000 (local dev). */
+/**
+ * Server address priority: ?server= in the invite link, then the last one used, then a default.
+ * The default is the game server on port 3000 under `ng serve` (port 4300), otherwise /ws on this
+ * same site, which is how the Docker/Caddy setup serves it.
+ */
 function defaultServer(params: URLSearchParams): string {
   const fromLink = params.get('server');
   if (fromLink) return fromLink;
   const saved = localStorage.getItem(SERVER_KEY);
   if (saved) return saved;
-  return location.protocol === 'https:' ? '' : `ws://${location.hostname || 'localhost'}:3000`;
+  if (location.port === '4300') return `ws://${location.hostname || 'localhost'}:3000`;
+  return `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws`;
 }
 
 /**
@@ -39,7 +45,7 @@ function defaultServer(params: URLSearchParams): string {
  */
 @Component({
   selector: 'sp-root',
-  imports: [FormsModule, GameComponent],
+  imports: [FormsModule, GameComponent, RulesComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -53,6 +59,8 @@ export class App {
   protected readonly view = signal<IPlayerView | null>(null);
   protected readonly error = signal<string | null>(null);
   protected readonly busy = signal(false);
+  /** Why we're back on the landing page (room closed, kicked…). Stays until dismissed or the next join. */
+  protected readonly notice = signal<string | null>(null);
   /** Increments on every state update so the game screen can close its sheets. */
   protected readonly stateVersion = signal(0);
 
@@ -106,6 +114,7 @@ export class App {
 
     localStorage.setItem(NAME_KEY, name);
     localStorage.setItem(SERVER_KEY, serverUrl);
+    this.notice.set(null);
     this.busy.set(true);
     this.pendingJoin = true;
 
@@ -162,16 +171,19 @@ export class App {
         }
         break;
       case 'removed':
+        // The room is closed or we're out of it, so don't prefill its code
         this.resetToJoin();
-        this.showError(msg.reason);
+        this.roomCode = '';
+        this.notice.set(msg.reason);
         break;
       case 'error':
         this.busy.set(false);
         this.pendingJoin = false;
         if (this.session() && !this.view()) {
-          // Couldn't rejoin our old seat (server restarted, or the room closed)
+          // Couldn't rejoin our old seat (server restarted, or the room closed while the phone slept)
           this.resetToJoin();
-          this.showError(`${msg.message}`);
+          this.roomCode = '';
+          this.notice.set(`Your last game has ended. ${msg.message}.`);
         } else {
           this.showError(msg.message);
         }

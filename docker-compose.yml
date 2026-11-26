@@ -1,0 +1,34 @@
+# Usage:  cp .env.example .env   (set DOMAIN)   then   docker compose up -d --build
+name: booty
+services:
+  server:
+    build:
+      context: .
+      target: server
+    restart: unless-stopped
+    environment:
+      # Browser pages allowed to connect: the player site, the Docker host screen, and the ng serve host screen
+      ALLOWED_ORIGINS: https://${DOMAIN},http://localhost:4280,http://127.0.0.1:4280,http://localhost:4200
+    # No published ports: only Caddy talks to it, over the compose network
+
+  web:
+    build:
+      context: .
+      target: web
+    restart: unless-stopped
+    depends_on:
+      - server
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"            # HTTP/3 (optional to forward on the router)
+      - "127.0.0.1:4280:4280"    # host screen, this machine only
+    volumes:
+      - caddy_data:/data         # certificates: keep this so you don't hit Let's Encrypt rate limits
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

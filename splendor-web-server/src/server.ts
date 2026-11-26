@@ -21,7 +21,7 @@ export function createGameServer(data: IGameData, options: IGameHubOptions = {})
             return;
         }
         res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('Splendor Web game server. Connect with a WebSocket.');
+        res.end('Booty game server. Connect with a WebSocket.');
     });
 
     const hub = new GameHub(http, rooms, options);

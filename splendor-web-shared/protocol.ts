@@ -63,6 +63,8 @@ export interface ISelfPlayer extends Omit<IPlayer, 'reserved'> {
 export interface IAvailableActions {
   isYourTurn: boolean;
   pending: IPendingDecision | null;
+  /** While discarding after a gem take: that take can be put back to choose another move. */
+  canUndoTake: boolean;
   canTakeGems: boolean;
   distinctGemColors: BasicGemColor[];
   requiredDistinctCount: number;
@@ -105,6 +107,7 @@ export type PlayerAction =
   | { type: 'reserveCard'; source: ReserveSource }
   | { type: 'purchaseCard'; cardId: number; payment?: IResource[] }
   | { type: 'discardGems'; gems: IResource[] }
+  | { type: 'undoTakeGems' }
   | { type: 'chooseNoble'; nobleId: number }
   | { type: 'pass' };
 
@@ -112,6 +115,7 @@ export type ClientMessage = (
   | { type: 'host:create' }
   | { type: 'host:rejoin'; roomCode: string; hostToken: string }
   | { type: 'host:kick'; playerId: string }
+  | { type: 'host:close' }
   | { type: 'player:join'; roomCode: string; name: string }
   | { type: 'player:rejoin'; roomCode: string; sessionToken: string }
   | { type: 'player:leave' }

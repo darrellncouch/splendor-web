@@ -1,4 +1,4 @@
-# Splendor Web – Game Server
+# Booty – Game Server
 
 The authoritative game server. It holds all game state in memory, enforces every rule, and talks to the host screen and player phones over plain WebSockets (JSON messages). The host and clients just display what they receive and send actions.
 
@@ -23,7 +23,7 @@ Env vars: `PORT` (default 3000), `DATA_DIR` (default `./data`), `ALLOWED_ORIGINS
 
 ## Card / noble data
 
-Put `cards.json` or `cards.csv` and `nobles.json` or `nobles.csv` in `data/`. Until then the made-up `*.example.json` files are used.
+Game data lives in `data/`: `cards.json` or `cards.csv`, and `nobles.json` or `nobles.csv` (JSON wins if both exist). The server won't start without both.
 
 - JSON matches `ICard` (`{ id, tier, prestige, bonus, cost: [{ id, count }] }`) and `INoble` (`{ id, prestige, cost, imgUrl }`).
 - CSV headers: `id,tier,prestige,bonus,white,blue,green,red,black` and `id,prestige,white,blue,green,red,black,imgUrl`.
@@ -70,7 +70,7 @@ Actions (`{ type: 'action', action: … }`):
   - `self` is the player's own tab, with reserved cards face up.
   - `actions` has flags for enabling buttons (`isYourTurn`, `canTakeGems`, `canReserve`, `canPurchase`, `canPass`, `affordableCardIds`, `doubleGemColors`, `requiredDistinctCount`, `pending`, …).
 - `{ type: 'error', message, requestId? }`: show the message to the player. Nothing changed on the server.
-- `{ type: 'removed', reason }`: kicked, left, or another tab took this seat. Go back to the join screen.
+- `{ type: 'removed', reason }`: kicked, left, another tab took this seat, or the room closed. A room closes when the host sends `host:close`, or when the host has been disconnected for 2 minutes (a refresh within that window keeps the room). Go back to the join screen.
 
 See `src/core/interfaces` and `src/hub/protocol.ts` for the exact shapes.
 

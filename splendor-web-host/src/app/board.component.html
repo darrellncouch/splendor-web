@@ -1,7 +1,7 @@
 @let b = board();
 
 <header class="top">
-  <h1>Splendor</h1>
+  <h1>Booty</h1>
   <span class="room">Room <b>{{ b.roomCode }}</b></span>
   <span class="round">Round {{ b.round }}</span>
   @if (b.finalRound && b.phase === 'playing') {
@@ -47,7 +47,7 @@
 
   <aside class="side">
     <section class="bank panel">
-      <h2>Bank</h2>
+      <h2>Treasure</h2>
       <div class="bank-gems">
         @for (c of gemColors; track c) {
           <sp-gem [color]="c" [count]="countOf(b.bank, c)" size="lg" />
@@ -86,11 +86,11 @@
 @if (b.phase === 'finished') {
   <div class="results-backdrop">
     <section class="results panel">
-      <h2>Game over</h2>
+      <h2>The voyage is over</h2>
       <ol>
         @for (p of standings(); track p.id) {
           <li [class.winner]="isWinner(p)">
-            <span class="place">{{ isWinner(p) ? '👑' : $index + 1 }}</span>
+            <span class="place">{{ isWinner(p) ? '🏴‍☠️' : $index + 1 }}</span>
             <span class="name">{{ p.name }}</span>
             <span class="score">{{ p.prestige }} <small>prestige</small></span>
             <span class="cards">{{ p.purchasedCount }} cards</span>
@@ -98,7 +98,7 @@
         }
       </ol>
       <div class="actions">
-        <button class="btn" (click)="playAgain.emit()">Play again</button>
+        <button class="btn" (click)="playAgain.emit()">Sail again</button>
         <button class="btn secondary" (click)="closeRoom.emit()">Close room</button>
       </div>
     </section>

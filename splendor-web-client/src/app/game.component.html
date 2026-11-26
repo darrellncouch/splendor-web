@@ -3,14 +3,16 @@
 @let b = board();
 
 <header class="status" [class.my-turn]="a.isYourTurn">
+  <span class="rules-btn"><sp-rules /></span>
   @if (b.phase === 'finished') {
     Game over
   } @else if (a.isYourTurn) {
-    Your turn!
+    Your turn, captain!
   } @else if (currentPlayer(); as cp) {
     Waiting for {{ cp.name }}…
   }
   @if (b.finalRound && b.phase === 'playing') { <span class="final">Final round</span> }
+  <button class="leave" (click)="confirmLeave()" aria-label="Leave the room">Leave</button>
 </header>
 
 <nav class="tabs" role="tablist">
@@ -146,7 +148,7 @@
   @if (p.type === 'discard') {
     <div class="sheet-backdrop"></div>
     <section class="sheet" role="dialog" aria-label="Return gems">
-      <h3>Too many gems!</h3>
+      <h3>Yer pockets are overflowing!</h3>
       <p class="muted">You can hold 10. Choose {{ p.count }} to return to the bank ({{ discardTotal() }}/{{ p.count }}).</p>
       <div class="discard-list">
         @for (c of allColors; track c) {
@@ -162,14 +164,20 @@
         }
       </div>
       <div class="sheet-actions">
+        @if (a.canUndoTake) {
+          <button class="btn secondary" (click)="undoTake()">Undo take</button>
+        }
         <button class="btn" [disabled]="discardTotal() !== p.count" (click)="confirmDiscard()">Return {{ p.count }}</button>
       </div>
+      @if (a.canUndoTake) {
+        <p class="muted small-note">Undo puts back the gems you just took, so you can pick a different move.</p>
+      }
     </section>
   } @else {
     <div class="sheet-backdrop"></div>
     <section class="sheet" role="dialog" aria-label="Choose a noble">
-      <h3>A noble wants to visit!</h3>
-      <p class="muted">You qualify for more than one. Pick who visits you.</p>
+      <h3>A Pirate King wants join your fleet</h3>
+      <p class="muted">You qualify for more than one. Pick who joins you.</p>
       <div class="nobles">
         @for (n of pendingNobles(); track n.id) {
           <button class="card-btn" (click)="chooseNoble(n.id)"><sp-noble [noble]="n" /></button>
@@ -183,20 +191,21 @@
 @if (b.phase === 'finished') {
   <div class="sheet-backdrop"></div>
   <section class="sheet" role="dialog" aria-label="Results">
-    <h3>{{ isWinner(me) ? 'You won! 👑' : 'Game over' }}</h3>
+    <h3>{{ isWinner(me) ? 'You won! 🏴‍☠️' : 'The voyage is over' }}</h3>
     <ol class="standings">
       @for (p of standings(); track p.id) {
         <li [class.winner]="isWinner(p)" [class.me]="p.id === me.id">
-          <span>{{ isWinner(p) ? '👑' : $index + 1 }}</span>
+          <span>{{ isWinner(p) ? '🏴‍☠️' : $index + 1 }}</span>
           <span class="name">{{ p.name }}</span>
           <b>{{ p.prestige }}</b>
         </li>
       }
     </ol>
     @if (isVip()) {
-      <div class="sheet-actions"><button class="btn" (click)="playAgain.emit()">Play again</button></div>
+      <div class="sheet-actions"><button class="btn" (click)="playAgain.emit()">Sail again</button></div>
     } @else {
       <p class="muted">Waiting for the host or VIP to start another game.</p>
     }
+    <button class="btn secondary" (click)="leave.emit()">Leave room</button>
   </section>
 }

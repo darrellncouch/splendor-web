@@ -11,7 +11,7 @@ const data = loadGameData();
 const server = createGameServer(data, { allowedOrigins });
 
 server.http.listen(port, () => {
-    console.log(`[server] Splendor Web listening on ws://localhost:${port}`);
+    console.log(`[server] Booty server listening on ws://localhost:${port}`);
     if (allowedOrigins.length) console.log(`[server] Allowed origins: ${allowedOrigins.join(', ')}`);
 });
 

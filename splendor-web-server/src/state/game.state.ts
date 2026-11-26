@@ -1,5 +1,6 @@
 import { GameRuleError } from "../core/errors/game-rule.error";
 import { ILogEntry } from "../core/interfaces/log-entry.interface";
+import { IResource } from "../core/interfaces/resource.interface";
 import { IPendingDecision } from "../core/interfaces/pending-decision.interface";
 import { GamePhase } from "../core/types/game-phase.type";
 import { PlayerState } from "./player.state";
@@ -21,6 +22,11 @@ export class GameState {
     public finalRound = false;
     /** Set when the current player has to finish something before their turn ends. */
     public pending: IPendingDecision | null = null;
+    /**
+     * The gems the current player just took, while they're being asked to discard because of it.
+     * Lets them put the take back and choose a different move. Null at any other time.
+     */
+    public undoableTake: Array<IResource> | null = null;
     public winnerIds: Array<string> = [];
 
     private _log: Array<ILogEntry> = [];
@@ -57,6 +63,7 @@ export class GameState {
         this.round = 1;
         this.finalRound = false;
         this.pending = null;
+        this.undoableTake = null;
         this.winnerIds = [];
         this._log = [];
     }
@@ -67,6 +74,7 @@ export class GameState {
         this.round = 1;
         this.finalRound = false;
         this.pending = null;
+        this.undoableTake = null;
         this.winnerIds = [];
         this._log = [];
         this.players.forEach(p => p.resetForNewGame());

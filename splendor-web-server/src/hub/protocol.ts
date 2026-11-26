@@ -18,6 +18,8 @@ export type ClientMessage =
     | { type: 'host:rejoin'; roomCode: string; hostToken: string }
     /** Host removes a player while in the lobby. */
     | { type: 'host:kick'; playerId: string }
+    /** Host closes the room. Every phone gets `removed` and the room is deleted. */
+    | { type: 'host:close' }
     /** Phone joins with a name. Reply: player:joined (save the sessionToken!) */
     | { type: 'player:join'; roomCode: string; name: string }
     /** Phone reconnects with its saved token. Reply: player:joined */
@@ -44,7 +46,7 @@ export type ServerMessage =
     | { type: 'state'; role: 'host'; board: IBoard }
     /** Sent to each player after every change, with their own private view. */
     | ({ type: 'state'; role: 'player' } & IPlayerView)
-    /** You were kicked, left, or another tab took your seat. The client should go back to the join screen. */
+    /** You were kicked, left, another tab took your seat, or the room closed (host closed it, or the host was gone for over 2 minutes). The client should go back to the join screen. */
     | { type: 'removed'; reason: string }
     | { type: 'error'; message: string; requestId?: string | number }
     | { type: 'pong' };
@@ -87,6 +89,7 @@ export function parseClientMessage(raw: string): { message: ClientMessage; reque
 function toClientMessage(d: Obj): ClientMessage {
     switch (d.type) {
         case 'host:create':
+        case 'host:close':
         case 'player:leave':
         case 'game:start':
         case 'game:reset':
@@ -137,7 +140,8 @@ export function parsePlayerAction(input: unknown): PlayerAction {
         case 'chooseNoble':
             return { type: 'chooseNoble', nobleId: id(input.nobleId, 'noble id') };
         case 'pass':
-            return { type: 'pass' };
+        case 'undoTakeGems':
+            return { type: input.type };
         default:
             throw new GameRuleError(`Unknown action "${input.type}"`);
     }

@@ -1,23 +1,36 @@
 // Shared look for the host and client apps (added to both through the angular.json "styles" list).
 
+// Booty: a pirate look. Weathered deck planks, dark wood panels with brass trim,
+// parchment cards, and a blackletter-ish display face (fonts load in each index.html).
 :root {
-  --bg: #13241d;
-  --bg-felt: radial-gradient(ellipse at 50% 30%, #24473a 0%, #13241d 70%);
-  --panel: rgba(8, 18, 14, .62);
-  --panel-strong: rgba(6, 14, 11, .85);
-  --panel-border: rgba(255, 255, 255, .1);
-  --text: #f3efe4;
-  --muted: #b5b9ae;
-  --accent: #f2c14e;
-  --accent-glow: rgba(242, 193, 78, .55);
-  --danger: #ff6b6b;
-  --ok: #5fd38d;
-  --card-body: #efe6d2;
+  --bg: #2c1c10;
+  --bg-deck:
+    radial-gradient(ellipse at 50% 35%, transparent 25%, rgba(0, 0, 0, .6) 100%),
+    repeating-linear-gradient(180deg, transparent 0 62px, rgba(0, 0, 0, .55) 62px 64px, rgba(255, 220, 160, .05) 64px 65px),
+    repeating-linear-gradient(90deg, rgba(255, 230, 190, .025) 0 1px, transparent 1px 6px, rgba(0, 0, 0, .05) 6px 8px, transparent 8px 19px),
+    linear-gradient(180deg, #4b301c, #352213 60%, #2c1c10);
+  --panel: rgba(30, 19, 10, .84);
+  --panel-strong: rgba(22, 14, 7, .94);
+  --panel-border: rgba(214, 168, 88, .38);
+  --text: #f6ebd2;
+  --muted: #c9b48c;
+  --accent: #e9b949;
+  --accent-glow: rgba(233, 185, 73, .5);
+  --danger: #d9473a;
+  --ok: #6fbf73;
+  --card-body: #f1e3bf;
+  --parchment: radial-gradient(ellipse at 40% 35%, #f7ead0 0%, #ecd9ad 55%, #d2b47a 100%);
+  --jolly-roger: url('../assets/gems/jolly-roger.svg');
   --radius: .8rem;
+  // Every card (face-up, back, empty slot) is --card-w wide and this many widths tall.
+  // Minimum is about 1.6: the color band (.42) + four cost circles and gaps (1.065) + padding (.06),
+  // so a 4-color cost never runs into the band or off the bottom. 1.65 leaves a little air.
+  --card-ratio: 1.65;
 
-  --tier: #2f6b3a;
-  --tier-light: #4a9b58;
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-display: 'Pirata One', 'Georgia', serif;
+  --tier: #2f5d4a;
+  --tier-light: #4b8a6c;
+  font-family: 'Alegreya Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -26,20 +39,26 @@ html, body {
   margin: 0;
   min-height: 100%;
   background: var(--bg);
-  background-image: var(--bg-felt);
+  background-image: var(--bg-deck);
   background-attachment: fixed;
   color: var(--text);
 }
 
 button { font: inherit; }
 
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+
 // ---- gem color tokens (any element with .gem-<color> picks them up) ----
-.gem-white { --gem: #f6f4ee; --gem-dark: #a8a49a; --gem-fg: #1b1b1b; --gem-shadow: rgba(255,255,255,.6); }
-.gem-blue  { --gem: #2f6fd6; --gem-dark: #173c80; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
-.gem-green { --gem: #27a25a; --gem-dark: #135a30; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
-.gem-red   { --gem: #d63a3a; --gem-dark: #7d1818; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
-.gem-black { --gem: #3a3a3f; --gem-dark: #101012; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.8); }
-.gem-gold  { --gem: #f2c14e; --gem-dark: #9a6d0c; --gem-fg: #3b2a00; --gem-shadow: rgba(255,255,255,.5); }
+.gem-white { --gem-art: url('../assets/gems/white.svg'); --gem: #f6f4ee; --gem-dark: #a8a49a; --gem-fg: #1b1b1b; --gem-shadow: rgba(255,255,255,.6); }
+.gem-blue  { --gem-art: url('../assets/gems/blue.svg'); --gem: #2f6fd6; --gem-dark: #173c80; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
+.gem-green { --gem-art: url('../assets/gems/green.svg'); --gem: #27a25a; --gem-dark: #135a30; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
+.gem-red   { --gem-art: url('../assets/gems/red.svg'); --gem: #d63a3a; --gem-dark: #7d1818; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.6); }
+.gem-black { --gem-art: url('../assets/gems/black.svg'); --gem: #3a3a3f; --gem-dark: #101012; --gem-fg: #fff;    --gem-shadow: rgba(0,0,0,.8); }
+.gem-gold  { --gem-art: url('../assets/gems/gold.svg'); --gem: #f2c14e; --gem-dark: #9a6d0c; --gem-fg: #3b2a00; --gem-shadow: rgba(255,255,255,.5); }
 
 // card faces use their bonus color
 .bonus-white { @extend .gem-white; }
@@ -48,16 +67,19 @@ button { font: inherit; }
 .bonus-red   { @extend .gem-red; }
 .bonus-black { @extend .gem-black; }
 
-// card backs by tier
-.tier-1 { --tier: #2f6b3a; --tier-light: #4f9e5c; }
-.tier-2 { --tier: #8a6a12; --tier-light: #c9a033; }
-.tier-3 { --tier: #1f4b8a; --tier-light: #3f7fd0; }
+// card backs by tier: sea green, rust, deep navy
+.tier-1 { --tier: #24493a; --tier-light: #3f7a60; }
+.tier-2 { --tier: #6b2e16; --tier-light: #a5532c; }
+.tier-3 { --tier: #182f4f; --tier-light: #33598c; }
 
 // ---- small shared UI bits ----
 .panel {
-  background: var(--panel);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 230, 190, .02) 0 1px, transparent 1px 9px),
+    var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: var(--radius);
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, .35), inset 0 0 0 4px rgba(214, 168, 88, .12), 0 6px 18px rgba(0, 0, 0, .45);
   backdrop-filter: blur(4px);
 }
 
@@ -66,16 +88,23 @@ button { font: inherit; }
   border: 0;
   border-radius: .6rem;
   padding: .75em 1.2em;
-  font-weight: 700;
-  color: #1d1600;
-  background: var(--accent);
+  font-weight: 800;
+  color: #2a1704;
+  background: linear-gradient(180deg, #f6d27a, var(--accent) 45%, #b9842a);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 0 0 1px #8a5a14, 0 2px 4px rgba(0, 0, 0, .45);
+  text-shadow: 0 1px 0 rgba(255, 235, 180, .5);
   cursor: pointer;
   transition: filter .15s, transform .05s;
   &:hover:not(:disabled) { filter: brightness(1.08); }
   &:active:not(:disabled) { transform: translateY(1px); }
   &:disabled { opacity: .4; cursor: not-allowed; }
-  &.secondary { background: rgba(255,255,255,.12); color: var(--text); }
-  &.danger { background: var(--danger); color: #fff; }
+  &.secondary {
+    background: linear-gradient(180deg, #5a3a22, #3d2715);
+    box-shadow: inset 0 1px 0 rgba(255, 220, 160, .15), inset 0 0 0 1px var(--panel-border), 0 2px 4px rgba(0, 0, 0, .4);
+    color: var(--text);
+    text-shadow: none;
+  }
+  &.danger { background: var(--danger); color: #fff; text-shadow: none; }
   &.small { padding: .4em .75em; font-size: .85em; }
 }
 
@@ -106,7 +135,7 @@ button { font: inherit; }
   max-width: min(92vw, 34rem);
   padding: .8em 1.1em;
   border-radius: .6rem;
-  background: #3b1111;
+  background: #3d140d;
   border: 1px solid var(--danger);
   color: #ffdede;
   box-shadow: 0 6px 24px rgba(0,0,0,.5);
@@ -121,7 +150,7 @@ button { font: inherit; }
   text-align: center;
   font-size: .85rem;
   font-weight: 700;
-  background: #7a5b00;
+  background: #7a3b10;
   color: #fff;
 }
 

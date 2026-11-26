@@ -11,7 +11,7 @@ import { BasicGemColor } from "../types/gem-color.type";
  * Loads cards and nobles from the data folder. Default is <server root>/data; set DATA_DIR to change it.
  *
  * For each of `cards` and `nobles`, the first of these files that exists is used:
- *   cards.json, cards.csv, cards.example.json
+ *   cards.json, cards.csv
  *
  * JSON: same shape as ICard / INoble.
  * CSV (header row required, costs as one column per color):
@@ -35,7 +35,7 @@ export function loadGameData(dataDir = process.env.DATA_DIR ?? resolve(__dirname
 }
 
 function loadFile(dir: string, name: string, parseCsv: (text: string) => Array<unknown>): Array<unknown> {
-    const candidates = [`${name}.json`, `${name}.csv`, `${name}.example.json`];
+    const candidates = [`${name}.json`, `${name}.csv`];
     for (const file of candidates) {
         const path = join(dir, file);
         if (!existsSync(path)) continue;
@@ -44,8 +44,6 @@ function loadFile(dir: string, name: string, parseCsv: (text: string) => Array<u
         const parsed = file.endsWith('.csv') ? parseCsv(text) : JSON.parse(text);
         if (!Array.isArray(parsed))
             throw new Error(`${path} must contain an array`);
-        if (file.includes('.example.'))
-            console.warn(`[data] Using placeholder ${file}. Add ${name}.json or ${name}.csv to use the real data.`);
         console.log(`[data] Loaded ${parsed.length} ${name} from ${file}`);
         return parsed;
     }

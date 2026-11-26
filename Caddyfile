@@ -1,0 +1,29 @@
+# Public player site with automatic HTTPS (Let's Encrypt). Needs ports 80 and 443 forwarded to this machine.
+{$DOMAIN} {
+	encode zstd gzip
+
+	handle /ws* {
+		reverse_proxy server:3000
+	}
+
+	handle {
+		root * /srv/client
+		try_files {path} /index.html
+		file_server
+	}
+}
+
+# Host screen. docker-compose.yml publishes this port on 127.0.0.1 only, so it's not reachable from outside.
+http://:4280 {
+	encode zstd gzip
+
+	handle /ws* {
+		reverse_proxy server:3000
+	}
+
+	handle {
+		root * /srv/host
+		try_files {path} /index.html
+		file_server
+	}
+}

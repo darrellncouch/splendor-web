@@ -12,6 +12,8 @@ export type PlayerAction =
     /** `payment` is optional. If it's left out, the server pays with colored gems first, then gold. */
     | { type: 'purchaseCard'; cardId: number; payment?: Array<IResource> }
     | { type: 'discardGems'; gems: Array<IResource> }
+    /** Instead of discarding after taking gems, put that take back and choose another move. */
+    | { type: 'undoTakeGems' }
     | { type: 'chooseNoble'; nobleId: number }
     /** Only allowed when the player has no legal move. */
     | { type: 'pass' };

@@ -112,6 +112,39 @@ describe('GameEngine turn flow', () => {
         assert.equal(g.state.currentPlayer?.id, g.state.players[1].id);
     });
 
+    it('lets the player put back a gem take instead of discarding, then choose another move', () => {
+        const g = startedGame(2);
+        const p = g.state.players[0];
+        p.addGems([{ id: 'black', count: 9 }]);
+        const whiteInBank = g.bank.getCount('white');
+        g.performAction(p.id, { type: 'takeGems', gems: [{ id: 'white', count: 1 }, { id: 'blue', count: 1 }, { id: 'green', count: 1 }] });
+        assert.equal(g.getPlayerView(p.id)?.actions.canUndoTake, true);
+
+        g.performAction(p.id, { type: 'undoTakeGems' });
+        assert.equal(g.state.pending, null);
+        assert.equal(p.gemTotal, 9);
+        assert.equal(g.bank.getCount('white'), whiteInBank);
+        assert.equal(g.state.currentPlayer?.id, p.id, 'still their turn');
+        assert.equal(g.getPlayerView(p.id)?.actions.canTakeGems, true);
+        assert.throws(() => g.performAction(p.id, { type: 'undoTakeGems' }), /can't do that/);
+
+        // A different move (reserve: +1 gold, so 10 tokens) ends the turn normally
+        g.performAction(p.id, { type: 'reserveCard', source: { from: 'deck', tier: 1 } });
+        assert.equal(g.state.currentPlayer?.id, g.state.players[1].id);
+    });
+
+    it('does not allow undoing once the discard is done, or for a move that was not a gem take', () => {
+        const g = startedGame(2);
+        const p = g.state.players[0];
+        p.addGems([{ id: 'black', count: 10 }]);
+        // A reserve that brings gold over 10 must be discarded, not undone (it revealed cards)
+        const cardId = g.getBoard().market[0].cards.find(c => c)!.id;
+        g.performAction(p.id, { type: 'reserveCard', source: { from: 'market', cardId } });
+        assert.equal(g.state.pending?.type, 'discard');
+        assert.equal(g.getPlayerView(p.id)?.actions.canUndoTake, false);
+        assert.throws(() => g.performAction(p.id, { type: 'undoTakeGems' }), /only undo taking gems/);
+    });
+
     it('gives a blind reserve plus gold, and hides it from other players', () => {
         const g = startedGame(2);
         const [p, other] = g.state.players;

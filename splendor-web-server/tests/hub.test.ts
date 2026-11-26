@@ -64,6 +64,43 @@ describe('GameHub over websockets', () => {
         await server.close();
     });
 
+    it('host:close removes every player and deletes the room', async () => {
+        const host = new Client(url);
+        await host.open();
+        host.send({ type: 'host:create' });
+        const { roomCode } = await host.next(ofType('room:created'));
+
+        const alice = new Client(url);
+        const bob = new Client(url);
+        await Promise.all([alice.open(), bob.open()]);
+        alice.send({ type: 'player:join', roomCode, name: 'Alice' });
+        bob.send({ type: 'player:join', roomCode, name: 'Bob' });
+        await alice.next(ofType('player:joined'));
+        const bobJoined = await bob.next(ofType('player:joined'));
+        alice.send({ type: 'game:start' });
+        await alice.next(m => m.type === 'state' && m.board.phase === 'playing');
+
+        // Only the host may close it
+        bob.send({ type: 'host:close' });
+        assert.match((await bob.next(ofType('error'))).message, /Only the host/);
+
+        host.send({ type: 'host:close' });
+        assert.equal((await alice.next(ofType('removed'))).reason, 'The host closed the room');
+        assert.equal((await bob.next(ofType('removed'))).reason, 'The host closed the room');
+
+        // The room is gone, so a saved seat can't be reclaimed
+        bob.send({ type: 'player:rejoin', roomCode, sessionToken: bobJoined.sessionToken });
+        assert.match((await bob.next(ofType('error'))).message, /not found/);
+
+        // The phones' sockets are still usable for a new room
+        host.send({ type: 'host:create' });
+        const second = await host.next(ofType('room:created'));
+        alice.send({ type: 'player:join', roomCode: second.roomCode, name: 'Alice' });
+        await alice.next(ofType('player:joined'));
+
+        host.close(); alice.close(); bob.close();
+    });
+
     it('runs lobby -> game -> action -> rejoin end to end', async () => {
         const host = new Client(url);
         await host.open();
@@ -150,5 +187,59 @@ describe('GameHub over websockets', () => {
         const state = await host2.next(ofType('state'));
         assert.equal(state.board.phase, 'lobby');
         host2.close();
+    });
+});
+
+describe('GameHub when the host disconnects', () => {
+    let server: IGameServer;
+    let url: string;
+
+    before(async () => {
+        server = createGameServer(testData(), { hostGraceMs: 300 });
+        await new Promise<void>(r => server.http.listen(0, r));
+        url = `ws://127.0.0.1:${(server.http.address() as AddressInfo).port}`;
+    });
+
+    after(async () => {
+        await server.close();
+    });
+
+    async function roomWithPlayer() {
+        const host = new Client(url);
+        await host.open();
+        host.send({ type: 'host:create' });
+        const created = await host.next(ofType('room:created'));
+        const alice = new Client(url);
+        await alice.open();
+        alice.send({ type: 'player:join', roomCode: created.roomCode, name: 'Alice' });
+        await alice.next(ofType('player:joined'));
+        return { host, alice, ...created };
+    }
+
+    it('closes the room if the host does not come back in time', async () => {
+        const { host, alice } = await roomWithPlayer();
+        host.close();
+        const removed = await alice.next(ofType('removed'));
+        assert.match(removed.reason, /host left/);
+        alice.close();
+    });
+
+    it('keeps the room if the host reconnects within the grace period', async () => {
+        const { host, alice, roomCode, hostToken } = await roomWithPlayer();
+        host.close();
+
+        const host2 = new Client(url);
+        await host2.open();
+        host2.send({ type: 'host:rejoin', roomCode, hostToken });
+        await host2.next(ofType('room:hosting'));
+
+        // Wait past the grace period: nobody should be removed
+        await new Promise(r => setTimeout(r, 500));
+        alice.drain();
+        alice.send({ type: 'state:request' });
+        const state = await alice.next(ofType('state'));
+        assert.equal(state.board.roomCode, roomCode);
+
+        host2.close(); alice.close();
     });
 });

@@ -1,6 +1,6 @@
-# Splendor Web
+# Booty
 
-A Jackbox-style online version of Splendor. A **host** screen shows the board (you screenshare it on Discord), players use their **phones** as controllers, and an authoritative **server** runs the game over WebSockets.
+A Jackbox-style, pirate-themed online gem-trading card game (inspired by Splendor). A **host** screen shows the board (you screenshare it on Discord), players use their **phones** as controllers, and an authoritative **server** runs the game over WebSockets.
 
 ```
 splendor-web/
@@ -28,6 +28,17 @@ npm run start:client  # http://localhost:4300 (also reachable from phones on you
 ```
 
 Open the host, click **Create room**, then open the client (or copy the invite link) and join with the code.
+
+## Self-hosting with Docker (everything on your desktop)
+
+`docker-compose.yml` runs two containers: the game server, and Caddy, which serves the phone client publicly over HTTPS (with `/ws` proxied to the server) and the host screen on `http://localhost:4280` (this machine only).
+
+1. Point a DNS name at your machine and forward TCP **80** and **443** to it (Caddy needs both to get its Let's Encrypt certificate). Nothing else may be using those ports.
+2. `cp .env.example .env` and set `DOMAIN`.
+3. `docker compose up -d --build` (run the same command again after code or card changes).
+4. Open `http://localhost:4280`. In the settings, set *Player site URL* to `https://<DOMAIN>/` and leave *Public server URL* blank. The client finds the server at `/ws` on its own site.
+
+Logs: `docker compose logs -f`. Stop: `docker compose down` (certificates are kept in the `caddy_data` volume).
 
 ## Playing with friends (server on your desktop, client on GitHub Pages)
 

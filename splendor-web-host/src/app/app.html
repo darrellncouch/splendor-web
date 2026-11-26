@@ -6,7 +6,7 @@
   @if (b.phase === 'lobby') {
     <main class="lobby">
       <header>
-        <h1>Splendor</h1>
+        <h1>Booty</h1>
         <button class="btn secondary small" (click)="closeRoom()">Close room</button>
       </header>
 
@@ -19,15 +19,15 @@
             <button class="btn small" (click)="copyInvite()">{{ copied() ? 'Copied!' : 'Copy invite link' }}</button>
           </div>
         }
-        @if (!settings().publicServerUrl) {
-          <p class="hint">No public server URL is set, so friends outside your network won't be able to connect. Close the room and add your tunnel URL in the settings.</p>
+        @if (settings().playerSiteUrl.includes('localhost')) {
+          <p class="hint">The player site URL points at localhost, so friends outside your network won't be able to open it. Close the room and set it to your public site in the settings.</p>
         }
       </section>
 
       <section class="players panel">
-        <h2>Players <span class="muted">{{ b.players.length }}/{{ b.maxPlayers }}</span></h2>
+        <h2>Crew <span class="muted">{{ b.players.length }}/{{ b.maxPlayers }}</span></h2>
         @if (b.players.length === 0) {
-          <p class="muted">Waiting for players to join…</p>
+          <p class="muted">Waiting for the crew to come aboard…</p>
         }
         <ul>
           @for (p of b.players; track p.id) {
@@ -40,7 +40,7 @@
           }
         </ul>
         <button class="btn start" [disabled]="!canStart()" (click)="start()">
-          {{ canStart() ? 'Start game' : 'Need at least ' + b.minPlayers + ' players' }}
+          {{ canStart() ? 'Set sail!' : 'Need at least ' + b.minPlayers + ' players' }}
         </button>
         <p class="hint">The VIP can also start the game from their phone.</p>
       </section>
@@ -50,7 +50,8 @@
   }
 } @else {
   <main class="setup">
-    <h1>Splendor</h1>
+    <h1>Booty</h1>
+    <p class="tagline">Plunder gems, hire a crew, and become the most infamous captain on the seas.</p>
     <p class="muted">Host screen. Share this window on Discord.</p>
 
     <div class="panel form">
@@ -59,7 +60,7 @@
         <input [ngModel]="settings().serverUrl" (ngModelChange)="updateSetting('serverUrl', $event)" placeholder="ws://localhost:3000" />
       </label>
       <label class="field">
-        Public server URL for players (your tunnel)
+        Public server URL for players (leave blank if the player site serves it at /ws)
         <input [ngModel]="settings().publicServerUrl" (ngModelChange)="updateSetting('publicServerUrl', $event)" placeholder="wss://something.trycloudflare.com" />
       </label>
       <label class="field">

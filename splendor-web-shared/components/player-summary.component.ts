@@ -54,6 +54,7 @@ import { NobleComponent } from './noble.component';
     .label { font-size: .75em; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
     .label b { font-size: 1.2em; opacity: 1; }
     .items { display: flex; flex-wrap: wrap; gap: .35em; align-items: center; }
+    .items:has(sp-gem) { gap: .55em; } /* room for the count badge */
     .bonus {
       display: grid;
       place-items: center;

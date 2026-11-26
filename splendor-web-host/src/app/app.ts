@@ -46,7 +46,8 @@ export class App {
 
   protected readonly status = this.socket.status;
   protected readonly settings = signal<HostSettings>({
-    serverUrl: 'ws://localhost:3000',
+    // Under `ng serve` (port 4200) the server is on port 3000; in the Docker setup it's /ws on this same site
+    serverUrl: location.port === '4200' ? 'ws://localhost:3000' : `ws://${location.host}/ws`,
     publicServerUrl: '',
     playerSiteUrl: 'http://localhost:4300/',
     ...load<HostSettings>(SETTINGS_KEY),
@@ -106,6 +107,9 @@ export class App {
   }
 
   protected closeRoom(): void {
+    // Tell the server first so it deletes the room and sends every phone back to the join screen.
+    // (Messages queued before close() are still delivered.)
+    this.socket.send({ type: 'host:close' });
     this.socket.disconnect();
     this.clearSession();
     this.board.set(null);
@@ -156,8 +160,9 @@ export class App {
         break;
       case 'error':
         if (!this.board() && this.session()) {
-          // The room we were rejoining is gone (server restarted or it timed out)
-          this.closeRoom();
+          // The room we were rejoining is gone (server restarted, or we were away too long and it closed)
+          this.socket.disconnect();
+          this.clearSession();
           this.busy.set(false);
           this.showError(`Your previous room is gone (${msg.message}). Create a new one.`);
         } else {

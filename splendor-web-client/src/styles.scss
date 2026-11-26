@@ -1,2 +1,13 @@
 /* Client-only global styles. The shared theme is in splendor-web-shared/styles/theme.scss */
 html, body { -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+
+// The night-sea painting sits on a fixed layer behind the page (see index.html),
+// so the page itself must not paint the theme's deck planks over it.
+html { background: #0d1418; }
+body { background: transparent; }
+
+// Panels sit over a busy painting, so frost them a little more
+.panel {
+  background: rgba(24, 16, 9, .8);
+  backdrop-filter: blur(8px) saturate(1.1);
+}

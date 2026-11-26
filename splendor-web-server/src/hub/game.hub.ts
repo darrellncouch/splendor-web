@@ -18,6 +18,8 @@ export interface IGameHubOptions {
     allowedOrigins?: Array<string>;
     heartbeatMs?: number;
     roomIdleMs?: number;
+    /** How long a room waits for its host to reconnect (refresh, Wi-Fi blip) before it's closed. Default 2 minutes. */
+    hostGraceMs?: number;
 }
 
 /**
@@ -30,7 +32,10 @@ export class GameHub {
     private readonly wss: WebSocketServer;
     private readonly connections = new Set<IConnection>();
     private readonly timers: Array<NodeJS.Timeout> = [];
+    /** Rooms whose host has disconnected, keyed by room code. The room closes when the timer fires. */
+    private readonly hostGoneTimers = new Map<string, NodeJS.Timeout>();
     private nextConnectionId = 1;
+    private closed = false;
 
     constructor(server: Server, private readonly rooms: RoomRegistry, private readonly options: IGameHubOptions = {}) {
         this.wss = new WebSocketServer({
@@ -45,7 +50,10 @@ export class GameHub {
     }
 
     public close(): void {
+        this.closed = true;
         this.timers.forEach(clearInterval);
+        this.hostGoneTimers.forEach(clearTimeout);
+        this.hostGoneTimers.clear();
         this.connections.forEach(c => c.socket.terminate());
         this.wss.close();
     }
@@ -70,7 +78,34 @@ export class GameHub {
         if (conn.role === 'player' && conn.playerId) {
             room.engine.setPlayerConnected(conn.playerId, this.isPlayerOnline(room.code, conn.playerId));
         }
+        if (conn.role === 'host' && !this.closed && !this.isHostOnline(room.code)) {
+            this.startHostGoneTimer(room);
+        }
         this.broadcast(room);
+    }
+
+    private startHostGoneTimer(room: IRoom): void {
+        this.clearHostGoneTimer(room.code);
+        const timer = setTimeout(() => {
+            this.hostGoneTimers.delete(room.code);
+            if (this.rooms.get(room.code) !== room || this.isHostOnline(room.code)) return;
+            this.closeRoom(room, "The host left, so the room was closed");
+            console.log(`[hub] Room ${room.code} closed: host didn't come back`);
+        }, this.options.hostGraceMs ?? 2 * 60_000);
+        this.hostGoneTimers.set(room.code, timer);
+    }
+
+    private clearHostGoneTimer(code: string): void {
+        clearTimeout(this.hostGoneTimers.get(code));
+        this.hostGoneTimers.delete(code);
+    }
+
+    /** Deletes the room and sends every connection in it (host included) a `removed` message. */
+    private closeRoom(room: IRoom, reason: string): void {
+        this.clearHostGoneTimer(room.code);
+        this.rooms.delete(room);
+        // Connections are detached but stay open so they can join or create another room
+        this.roomConnections(room.code).forEach(c => this.evict(c, reason));
     }
 
     private heartbeat(): void {
@@ -128,6 +163,7 @@ export class GameHub {
                 if (room.hostToken !== msg.hostToken)
                     throw new GameRuleError("Invalid host token for that room");
                 this.attach(conn, room, 'host', null);
+                this.clearHostGoneTimer(room.code);
                 this.send(conn, { type: 'room:hosting', roomCode: room.code });
                 return this.sendState(conn, room);
             }
@@ -173,6 +209,13 @@ export class GameHub {
                     .filter(c => c.playerId === msg.playerId)
                     .forEach(c => this.evict(c, "You were removed from the room"));
                 return this.broadcast(room);
+            }
+
+            case 'host:close': {
+                const room = this.requireHost(conn);
+                this.closeRoom(room, "The host closed the room");
+                console.log(`[hub] Room ${room.code} closed by host`);
+                return;
             }
 
             case 'game:start': {
@@ -258,6 +301,10 @@ export class GameHub {
 
     private isPlayerOnline(code: string, playerId: string): boolean {
         return this.roomConnections(code).some(c => c.playerId === playerId);
+    }
+
+    private isHostOnline(code: string): boolean {
+        return this.roomConnections(code).some(c => c.role === 'host');
     }
 
     private isOriginAllowed(origin: string | undefined): boolean {

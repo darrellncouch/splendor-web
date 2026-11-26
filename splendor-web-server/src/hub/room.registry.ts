@@ -49,6 +49,10 @@ export class RoomRegistry {
         return room;
     }
 
+    public delete(room: IRoom): void {
+        this.rooms.delete(room.code);
+    }
+
     public touch(room: IRoom): void {
         room.lastActivity = Date.now();
     }

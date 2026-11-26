@@ -10,6 +10,8 @@ export interface IAvailableActions {
     isYourTurn: boolean;
     /** A decision this player must resolve right now (discard down to 10, or pick a noble). */
     pending: IPendingDecision | null;
+    /** True while discarding after a gem take: the player can put that take back and pick another move instead. */
+    canUndoTake: boolean;
     canTakeGems: boolean;
     /** Colors that can be part of a "take different colors" move. */
     distinctGemColors: Array<BasicGemColor>;
